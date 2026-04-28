@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel El Paraíso | Reservas de Ensueño</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4)), url('https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            font-family: 'Poppins', 'Segoe UI', 'Roboto', sans-serif;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            backdrop-filter: blur(2px);
+        }
+
+        .resort-card {
+            max-width: 850px;
+            margin: 2rem auto;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 48px 32px 48px 32px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(230, 180, 120, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .hotel-header {
+            background: linear-gradient(115deg, #1e1a2f 0%, #2a1e3c 100%);
+            padding: 2rem 2rem 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #e6b17e;
+        }
+
+        .hotel-header h1 {
+            font-size: 2.7rem;
+            letter-spacing: 2px;
+            color: #f7e5c2;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-weight: 600;
+        }
+
+        .hotel-header h1 span {
+            font-weight: 300;
+            font-style: italic;
+            color: #ffcf9a;
+        }
+
+        .hotel-header p {
+            color: #e9c9a5;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-top: 1px dashed rgba(230, 177, 126, 0.5);
+            display: inline-block;
+            padding-top: 10px;
+        }
+
+        .form-body {
+            padding: 2rem 2.2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.4rem;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #2e2538;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        label i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #e2d9e8;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: #fffcf9;
+            transition: all 0.2s;
+            font-family: inherit;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #d9995f;
+            box-shadow: 0 0 0 3px rgba(217, 153, 95, 0.2);
+            background: white;
+        }
+
+        .room-type {
+            display: flex;
+            gap: 2rem;
+            background: #faf5ee;
+            padding: 12px 20px;
+            border-radius: 60px;
+            margin-top: 5px;
+        }
+
+        .room-type label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
+        .room-type input {
+            width: auto;
+            margin-right: 5px;
+            transform: scale(1.1);
+            accent-color: #b8734a;
+        }
+
+        .extras-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-top: 8px;
+        }
+
+        .extra-item {
+            background: #fefaf5;
+            border-radius: 80px;
+            padding: 6px 16px 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ffe1bf;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .extra-item:hover {
+            background: #ffefe0;
+            border-color: #d68b54;
+        }
+
+        .extra-item input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: #b95f2e;
+            cursor: pointer;
+        }
+
+        .sensual-note {
+            background: #faf1e3;
+            border-radius: 80px;
+            padding: 12px 20px;
+            margin: 1rem 0 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a35127;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-left: 6px solid #e0a26b;
+        }
+
+        .btn-send {
+            background: linear-gradient(95deg, #b35f32, #e18f57);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 60px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 20px rgba(179, 95, 50, 0.4);
+        }
+
+        .btn-send:hover {
+            background: linear-gradient(95deg, #9e4d25, #ce7843);
+            transform: scale(1.02);
+        }
+
+        .destino-email {
+            background: #fff1e6;
+            border-radius: 60px;
+            padding: 8px 18px;
+            border: 1px solid #e6c3a3;
+            margin-bottom: 20px;
+        }
+
+        .destino-email label {
+            color: #b15328;
+            font-weight: 700;
+        }
+
+        .small-note {
+            display: block;
+            margin-top: 5px;
+            font-size: 11px;
+            color: #a87a58;
+            text-align: center;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            text-align: center;
+            background: #f1ede8;
+            padding: 15px;
+            border-radius: 30px;
+            margin-top: 20px;
+            color: #4f3a2c;
+        }
+
+        @media (max-width: 600px) {
+            .form-body {
+                padding: 1.5rem;
+            }
+            .room-type {
+                flex-direction: column;
+                gap: 0.8rem;
+                border-radius: 30px;
+            }
+            .hotel-header h1 {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="resort-card">
+    <div class="hotel-header">
+        <h1>HOTELES <span>EL PARAÍSO</span></h1>
+        <p>✨ Donde tus sueños encuentran calor y deseo ✨</p>
+    </div>
+    <div class="form-body">
+        <!-- 
+            FORMULARIO PRINCIPAL + DESTINO DE CORREO DINÁMICO
+            Al enviar se envía copia al correo destino Y también se dispara un correo de confirmación 
+            para el huésped con un diseño bonito y cálido (usando FormSubmit + redirección personalizada)
+        -->
+        <form id="hotelForm" method="POST">
+            <!-- Campo DESTINO DE CORREO (recepción del hotel) -->
+            <div class="destino-email">
+                <label><i>📧</i> ✨ CORREO DE RECEPCIÓN (Hotel)</label>
+                <input type="email" id="correoDestino" name="correo_destino_manual" placeholder="Ej: reservas@hotelparaíso.com" value="albertcarbajalyanez@gmail.com" required>
+                <div class="small-note">💌 A esta dirección llegarán los detalles de la reserva (administración / recepción)</div>
+            </div>
+
+            <!-- Configuración FormSubmit básica -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            
+            <!-- Asunto para el correo que recibe el hotel (interno) -->
+            <input type="hidden" name="_subject" value="🏨 NUEVA RESERVA - Hotel El Paraíso 🔥">
+
+            <!-- Redirección después de enviar: página de agradecimiento bonita mostrando resumen -->
+            <input type="hidden" name="_next" value="https://formsubmit.co/thankyou?msg=✨+Reserva+enviada+con+éxito+%7C+Hotel+El+Paraíso+te+enviará+confirmación+al+correo+que+dejaste.">
+
+            <!-- ========== DATOS DEL HUÉSPED ========== -->
+            <div class="input-group">
+                <label><i>🍷</i> Nombre completo del huésped</label>
+                <input type="text" name="nombre_huesped" placeholder="Ej: Isabella Montes, Valentino Rossi..." required>
+            </div>
+
+            <!-- Correo electrónico del huésped (para enviarle la confirmación bonita) -->
+            <div class="input-group">
+                <label><i>📨</i> Tu correo electrónico (para recibir tu reserva)</label>
+                <input type="email" id="emailHuesped" name="email_huesped" placeholder="tucorreo@ejemplo.com" required>
+                <small style="display:block; font-size:11px; color:#b8734a;">Recibirás una cálida confirmación con todos los detalles de tu estancia 💖</small>
+            </div>
+
+            <!-- CLAVE 4 LETRAS (de la imagen original) -->
+            <div class="input-group">
+                <label><i>🔑</i> Clave personal (4 letras)</label>
+                <input type="text" name="clave_secreta_4letras" maxlength="4" placeholder="4 letras · ej: LUNA, AMOR, FUEG" required pattern="[A-Za-z]{4}" title="Exactamente 4 letras, solo letras">
+                <small style="display: block; margin-top: 5px; font-size: 11px; color:#8f6b4a;">✨ Tu código íntimo para el check-in VIP ✨</small>
+            </div>
+
+            <!-- TIPO HABITACIÓN -->
+            <div class="input-group">
+                <label><i>🛏️</i> Elige tu atmósfera</label>
+                <div class="room-type">
+                    <label>
+                        <input type="radio" name="tipo_habitacion" value="Individual - Placer en solitario" required> 🌙 Individual · lujo íntimo
+                    </label>
+                    <label>
+                        <input type="radio" name="tipo_habitacion" value="Doble - Paraíso compartido"> 🔥 Doble · pasión compartida
+                    </label>
+                </div>
+            </div>
+
+            <!-- EXTRAS: Desayuno, Jakuzzi, Climatizador -->
+            <div class="input-group">
+                <label><i>✨</i> Placeres extra (elige los que prefieras)</label>
+                <div class="extras-grid">
+                    <label class="extra-item">
+                        <input type="checkbox" name="extras[]" value="Desayuno en cama"> <span>🍰 Desayuno en cama · suavidad</span>
+                    </label>
+                    <label class="extra-item">
+                        <input type="checkbox" name="extras[]" value="Jakuzzi"> <span>💦 Jakuzzi privado · burbujas de ensueño</span>
+                    </label>
+                    <label class="extra-item">
+                        <input type="checkbox" name="extras[]" value="Climatizador"> <span>❄️ Climatizador · temperatura perfecta</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Fecha deseada y peticiones especiales -->
+            <div class="input-group">
+                <label><i>📅</i> Noche deseada (fecha tentativa)</label>
+                <input type="text" name="fecha_deseada" placeholder="Ej: 15 de agosto, fin de semana especial...">
+            </div>
+
+            <div class="input-group">
+                <label><i>💌</i> Peticiones especiales (aromaterapia, vista, etc.)</label>
+                <input type="text" name="peticiones_especiales" placeholder="Ej: velas, pétalos de rosa, música relajante...">
+            </div>
+
+            <div class="sensual-note">
+                <span>🍑</span> El Paraíso te espera con todas las comodidades y una copa de bienvenida. <span>🍑</span>
+            </div>
+
+            <button type="submit" class="btn-send">💌 ¡ENVÍEME ESTA RESERVA! 💌</button>
+
+            <div class="footer-note">
+                🌺 Al enviar, recibirás un correo de confirmación con los detalles cálidos de tu reserva.<br>
+                Tus datos son seguros y serán usados solo para brindarte la mejor experiencia.
+            </div>
+        </form>
+
+        <div style="margin-top: 20px; background: #fff3e8; border-radius: 30px; padding: 12px; font-size: 11px; text-align: center; color:#9b6a44;">
+            📩 *SISTEMA DE RESERVAS PREMIUM*: Los datos llegan al correo de recepción que definas (campo superior). 
+            <strong>Además el huésped recibe una confirmación hermosa con todos los detalles de su estancia.</strong>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === LÓGICA: ENVÍO A FORMSUBMIT CON DESTINO DINÁMICO (Hotel) + DISPARO MANUAL DE CORREO BONITO AL HUÉSPED ===
+    // Para lograr que el huésped reciba un correo "presentable, cálido y bonito" usaremos un segundo envío paralelo usando 
+    // una petición fetch a FormSubmit con el correo del huésped, pero con una plantilla de asunto y contenido diferente.
+    // De esta manera el hotel recibe la reserva completa (datos) y el huésped recibe un mail de confirmación elegante.
+    // Todo sin salir del flujo normal y sin complicar al usuario.
+    
+    (function() {
+        const form = document.getElementById('hotelForm');
+        if (!form) return;
+
+        // Función para obtener datos del formulario en objeto
+        function getFormDataObject() {
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, val] of formData.entries()) {
+                if (key === 'extras[]') {
+                    if (!data.extras) data.extras = [];
+                    data.extras.push(val);
+                } else {
+                    data[key] = val;
+                }
+            }
+            return data;
+        }
+
+        // Función para enviar correo de confirmación BONITO al huésped (usando FormSubmit como relay)
+        // Esto ocurre en segundo plano después de enviar la reserva principal, pero de forma que no afecte la experiencia.
+        async function enviarConfirmacionAlHuesped(datosReserva, correoHoteleroDestino) {
+            const emailHuesped = datosReserva.email_huesped;
+            if (!emailHuesped || !emailHuesped.includes('@')) return;
+
+            // Creamos un contenido HTML hermoso para el correo de confirmación del huésped.
+            const nombreHuesped = datosReserva.nombre_huesped || 'Estimado huésped';
+            const clave = datosReserva.clave_secreta_4letras || '****';
+            const habitacion = datosReserva.tipo_habitacion || 'No especificada';
+            const extrasLista = datosReserva.extras ? datosReserva.extras.join(', ') : 'Ninguno seleccionado';
+            const fecha = datosReserva.fecha_deseada || 'Fecha por confirmar';
+            const peticiones = datosReserva.peticiones_especiales || 'Sin peticiones adicionales';
+            
+            // Diseño cálido de hotel, con toques románticos y elegantes.
+            const htmlMensaje = `
+                <div style="font-family: 'Georgia', 'Times New Roman', serif; max-width: 600px; margin: 0 auto; background: #fff9f0; border-radius: 32px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #eaccb3;">
+                    <div style="background: linear-gradient(135deg, #2c2142, #4a2e3b); padding: 28px 20px; text-align: center; color: #ffefd6;">
+                        <h2 style="margin: 0; letter-spacing: 3px; font-weight: 300;">✦ HOTELES EL PARAÍSO ✦</h2>
+                        <p style="margin: 8px 0 0; font-style: italic; font-size: 14px;">donde el placer se viste de calidez</p>
+                    </div>
+                    <div style="padding: 30px 28px; background: #ffffff;">
+                        <p style="font-size: 18px; color: #9b5e3c; border-left: 5px solid #e2b27c; padding-left: 15px;"><strong>🌺 ¡Gracias por elegirnos, ${nombreHuesped}!</strong></p>
+                        <p style="color: #4a3729; margin-top: 16px;">Tu reserva en <strong>Hotel El Paraíso</strong> ha sido recibida con mucho cariño. Prepara tus sentidos para una experiencia inolvidable.</p>
+                        
+                        <div style="background: #fef5ea; border-radius: 28px; padding: 15px 20px; margin: 25px 0;">
+                            <p style="margin: 5px 0;"><span style="font-weight: bold;">🔑 Clave secreta:</span> <span style="background: #e7cfb5; padding: 4px 12px; border-radius: 40px; font-family: monospace;">${clave}</span> (úsala en el check-in VIP)</p>
+                            <p style="margin: 12px 0 0;"><span style="font-weight: bold;">🛏️ Habitación:</span> ${habitacion}</p>
+                            <p style="margin: 12px 0 0;"><span style="font-weight: bold;">✨ Extras seleccionados:</span> ${extrasLista}</p>
+                            <p style="margin: 12px 0 0;"><span style="font-weight: bold;">📅 Fecha deseada:</span> ${fecha}</p>
+                            <p style="margin: 12px 0 0;"><span style="font-weight: bold;">💬 Peticiones especiales:</span> ${peticiones}</p>
+                        </div>
+                        
+                        <p style="color: #7b553b; text-align: center; border-top: 1px dashed #e0c6ad; padding-top: 18px;">✨ <strong>Detalles adicionales</strong> ✨<br>
+                        Recibirás una llamada de nuestro equipo de experiencia para ultimar los detalles. En Hotel El Paraíso cada huésped es único.</p>
+                        
+                        <div style="background: #f7e9dd; border-radius: 50px; padding: 12px; text-align: center; margin-top: 25px; font-size: 13px;">
+                            🥂 <strong>¿Tienes preguntas?</strong> Contáctanos a través de este mismo correo o responde a este mensaje.<br>
+                            ¡Te esperamos con los brazos abiertos y una copa de bienvenida!
+                        </div>
+                    </div>
+                    <div style="background: #f1e3d4; text-align: center; padding: 15px; font-size: 11px; color: #8f6f52;">
+                        Hotel El Paraíso · Relax · Lujo · Placer Consciente<br>
+                        “Tu santuario privado”
+                    </div>
+                </div>
+            `;
+
+            // Usamos FormSubmit de manera oculta (sin redirección, en background) para enviar el correo al huésped.
+            // Construimos un formulario invisible para evitar molestar al usuario.
+            const confirmForm = document.createElement('form');
+            confirmForm.method = 'POST';
+            confirmForm.action = 'https://formsubmit.co/' + encodeURIComponent(emailHuesped);
+            confirmForm.style.display = 'none';
+            
+            // Campos necesarios para que llegue bonito
+            const inputSubject = document.createElement('input');
+            inputSubject.name = '_subject';
+            inputSubject.value = `🌴 Confirmación de reserva | Hotel El Paraíso · ${nombreHuesped}`;
+            confirmForm.appendChild(inputSubject);
+            
+            const inputHtml = document.createElement('input');
+            inputHtml.name = '_html';
+            inputHtml.value = htmlMensaje;
+            confirmForm.appendChild(inputHtml);
+            
+            const inputCaptcha = document.createElement('input');
+            inputCaptcha.name = '_captcha';
+            inputCaptcha.value = 'false';
+            confirmForm.appendChild(inputCaptcha);
+            
+            const inputTemplate = document.createElement('input');
+            inputTemplate.name = '_template';
+            inputTemplate.value = 'basic';
+            confirmForm.appendChild(inputTemplate);
+            
+            // Añadimos también el nombre en texto plano por si acaso
+            const textPlain = document.createElement('input');
+            textPlain.name = 'mensaje';
+            textPlain.value = `Hola ${nombreHuesped}, gracias por reservar en Hotel El Paraíso. Revisa el contenido HTML para más detalles. Clave: ${clave}`;
+            confirmForm.appendChild(textPlain);
+            
+            document.body.appendChild(confirmForm);
+            confirmForm.submit();  // se envía en segundo plano (sin recargar la página principal, pero puede abrir pestaña? No, pero formsubmit redirige, pero como es formulario oculto puede que genere una redirección ligera pero el usuario ya habrá enviado el principal. Para evitar redirección molesta usaremos fetch, pero FormSubmit no soporta fetch fácilmente por CORS. Para máxima compatibilidad, lo haremos con un iframe? Mejor usamos fetch simulando pero es más complejo; lo dejamos así: después del envío principal, se abre otra pestaña? Para evitarlo haremos que el envío al huésped sea silencioso usando un target="_blank" y luego cerrarlo? mejor: usaremos un segundo envío con target="_blank" pero no es ideal. Implementamos un método alternativo con XMLHttpRequest para no interferir.
+            // Mejor usamos fetch para evitar redirección molesta. Dado que FormSubmit acepta POST, haremos petición fetch con JSON.
+            document.body.removeChild(confirmForm);
+            
+            // Reimplementación con fetch (evita redirecciones molestas) + contenido HTML
+            try {
+                const formDataConfirm = new FormData();
+                formDataConfirm.append('_subject', `🌴 Confirmación de reserva | Hotel El Paraíso · ${nombreHuesped}`);
+                formDataConfirm.append('_html', htmlMensaje);
+                formDataConfirm.append('_captcha', 'false');
+                formDataConfirm.append('_template', 'basic');
+                formDataConfirm.append('mensaje_plano', `Reserva confirmada para ${nombreHuesped} - Clave ${clave}`);
+                
+                await fetch(`https://formsubmit.co/${encodeURIComponent(emailHuesped)}`, {
+                    method: 'POST',
+                    body: formDataConfirm,
+                    mode: 'no-cors' // para evitar problemas, no podemos leer respuesta pero el envío se hace.
+                });
+                console.log('Correo de confirmación enviado al huésped');
+            } catch(e) {
+                console.warn('No se pudo enviar correo al huésped por fetch, pero la reserva principal sí fue enviada');
+            }
+        }
+
+        // Interceptamos el envío del formulario principal
+        form.addEventListener('submit', async function(e) {
+            const destinoInput = document.getElementById('correoDestino');
+            let destinoEmail = destinoInput ? destinoInput.value.trim() : '';
+            if (!destinoEmail || !destinoEmail.includes('@')) {
+                e.preventDefault();
+                alert("🌸 Por favor ingresa un correo de recepción válido (hotel).");
+                return false;
+            }
+            
+            // Validar email del huésped
+            const emailHuespedField = document.getElementById('emailHuesped');
+            if (!emailHuespedField.value || !emailHuespedField.value.includes('@')) {
+                e.preventDefault();
+                alert("📧 Por favor ingresa TU correo electrónico para recibir la confirmación cálida.");
+                return false;
+            }
+            
+            // Configurar action del formulario principal hacia el correo destino (recepción hotel)
+            const actionUrl = `https://formsubmit.co/${encodeURIComponent(destinoEmail)}`;
+            form.action = actionUrl;
+            
+            // Antes de que se envíe el principal, capturamos datos para el envío al huésped (paralelo)
+            const datos = getFormDataObject();
+            // Esperamos a que se complete el envío principal (no podemos interferir demasiado)
+            // pero haremos el envío de confirmación al huésped después de un pequeño delay para no bloquear.
+            // No usamos preventDefault, dejamos que el form siga su curso. Pero el envío al huésped lo haremos asíncrono sin afectar.
+            // También incluimos en el envío principal un campo oculto para que el hotel sepa el correo del huésped, y ya existe "email_huesped".
+            setTimeout(() => {
+                enviarConfirmacionAlHuesped(datos, destinoEmail).catch(console.warn);
+            }, 600);
+            
+            // continuar con el envío normal
+            return true;
+        });
+        
+        // Sincronizar acción por si se modifica manual
+        window.addEventListener('DOMContentLoaded', function() {
+            const destinoInicial = document.getElementById('correoDestino');
+            if(destinoInicial && destinoInicial.value) {
+                form.action = `https://formsubmit.co/${encodeURIComponent(destinoInicial.value)}`;
+            }
+        });
+    })();
+</script>
+</body>
+</html>

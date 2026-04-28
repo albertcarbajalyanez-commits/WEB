@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Elecciones Generales 2026 – Perú</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c1121f;--red-dark:#8b0000;--gold:#c9a84c;
+  --white:#fff;--off:#f5f3ef;--text:#1a1a1a;--muted:#6b6b6b;
+  --border:#ddd8d0;--card-bg:#fff;--nav-h:64px;
+}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off);color:var(--text);min-height:100vh}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--red);height:var(--nav-h);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 12px rgba(0,0,0,.35);overflow-x:auto}
+nav a{color:#fff;text-decoration:none;font-size:.78rem;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;padding:0 20px;
+      height:var(--nav-h);display:flex;align-items:center;
+      border-bottom:3px solid transparent;white-space:nowrap;
+      transition:background .2s,border-color .2s}
+nav a:hover,nav a.active{background:var(--red-dark);border-bottom-color:var(--gold)}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* HERO */
+.section-header{
+  background:linear-gradient(135deg,var(--red-dark) 0%,var(--red) 60%,#e63946 100%);
+  padding:48px 40px 36px;text-align:center;position:relative;overflow:hidden}
+.section-header::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(255,255,255,.03) 18px,rgba(255,255,255,.03) 36px)}
+.section-header .lbl{font-size:.7rem;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px;position:relative}
+.section-header h1{font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:900;color:#fff;
+  letter-spacing:.03em;position:relative;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.section-header .div{width:60px;height:3px;background:var(--gold);
+  margin:14px auto 0;border-radius:2px;position:relative}
+
+/* GRID WRAP */
+.grid-wrap{max-width:1100px;margin:0 auto;padding:48px 24px 80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:26px}
+
+/* CARD */
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:4px;
+      display:flex;align-items:stretch;overflow:hidden;cursor:pointer;
+      transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .22s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.14);border-color:var(--red)}
+.card-photo{width:110px;min-width:110px;background:#e8e4dd;position:relative;overflow:hidden}
+.card-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;
+                display:block;transition:transform .35s}
+.card:hover .card-photo img{transform:scale(1.06)}
+.card-photo .ph{width:100%;min-height:130px;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e4dd,#d4cfc7);
+  color:#999;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  gap:6px;text-align:center;padding:8px}
+.card-photo .ph svg{opacity:.4}
+.card-body{padding:18px 16px;display:flex;flex-direction:column;justify-content:center;flex:1}
+.card-name{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;
+           line-height:1.25;color:var(--text);margin-bottom:10px}
+.card-tag{display:inline-flex;align-items:center;gap:6px;background:#fdf3f3;
+          border:1px solid #f5c0c0;border-radius:2px;padding:4px 10px;
+          font-size:.7rem;font-weight:700;color:var(--red-dark);
+          letter-spacing:.05em;text-transform:uppercase;max-width:100%}
+.card-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0}
+
+/* PRESIDENT CARD (bigger) */
+.pres-card{background:var(--card-bg);border:2px solid var(--gold);border-radius:6px;
+           display:flex;align-items:stretch;overflow:hidden;cursor:pointer;max-width:480px;
+           transition:transform .22s,box-shadow .22s}
+.pres-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.pres-card .card-photo{width:140px;min-width:140px}
+.pres-card .card-photo .ph{min-height:180px}
+.pres-card .card-body{padding:22px 20px}
+.pres-card .card-name{font-size:1.15rem;margin-bottom:8px}
+.pres-meta{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.pres-meta span{display:block}
+
+/* DETAIL POPUP */
+.detail-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);
+  display:none;align-items:center;justify-content:center;padding:20px}
+.detail-overlay.open{display:flex}
+.detail-box{background:#fff;border-radius:6px;max-width:460px;width:100%;
+  padding:32px 28px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);
+  animation:popIn .25s cubic-bezier(.22,1,.36,1)}
+@keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.detail-box .close-btn{position:absolute;top:14px;right:16px;background:none;border:none;
+  font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1}
+.detail-box .close-btn:hover{color:var(--red)}
+.detail-party{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px}
+.detail-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;
+  color:var(--text);margin-bottom:16px;line-height:1.2}
+.detail-row{display:flex;gap:10px;margin-bottom:8px;font-size:.88rem}
+.detail-row .lbl2{font-weight:700;color:var(--red);min-width:120px}
+.detail-row .val{color:var(--text)}
+.back-home-btn{display:inline-flex;align-items:center;gap:8px;margin-top:20px;
+  background:var(--red);color:#fff;border:none;padding:10px 20px;border-radius:3px;
+  font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:background .2s}
+.back-home-btn:hover{background:var(--red-dark)}
+
+/* LIST SECTION (senadores, diputados, parlamento) */
+.list-section{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+.party-block{margin-bottom:48px}
+.party-block h2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;
+  color:var(--red);border-bottom:2px solid var(--gold);padding-bottom:10px;
+  margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.party-icon{
+  width:36px;height:36px;border-radius:50%;background:var(--gold);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:900;color:#fff;text-align:center;
+  line-height:1.1;flex-shrink:0;overflow:hidden}
+.candidate-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.cand-item{background:#fff;border:1px solid var(--border);border-radius:3px;
+           padding:10px 14px;display:flex;align-items:center;gap:12px;
+           font-size:.85rem;transition:border-color .2s,background .2s}
+.cand-item:hover{border-color:var(--red);background:#fdf8f8}
+.cand-num{font-size:.72rem;font-weight:700;color:var(--red);min-width:22px;text-align:right}
+.cand-icon-wrap{
+  width:32px;height:32px;border-radius:50%;background:var(--border);
+  flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cand-icon-wrap img{width:100%;height:100%;object-fit:cover}
+.cand-icon-wrap .ico-ph{width:16px;height:16px;opacity:.4}
+.cand-name-txt{font-weight:600;color:var(--text);line-height:1.2;flex:1}
+
+/* COMING SOON */
+.coming-soon{max-width:600px;margin:120px auto;text-align:center;padding:0 24px}
+.coming-soon h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--red);margin-bottom:12px}
+.coming-soon p{color:var(--muted);font-size:1rem}
+
+/* FOOTER */
+footer{background:var(--red-dark);color:rgba(255,255,255,.55);
+  text-align:center;padding:22px 16px;font-size:.78rem;letter-spacing:.04em}
+
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr}
+  .candidate-list{grid-template-columns:1fr}
+  nav{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="active" data-page="presidencial">Candidatos Presidenciales</a>
+  <a href="#" data-page="senadores">Senadores</a>
+  <a href="#" data-page="diputados">Diputados</a>
+  <a href="#" data-page="parlamento">Parlamento Andino</a>
+</nav>
+
+<!-- ══════════════ PRESIDENCIAL ══════════════ -->
+<section class="page active" id="page-presidencial">
+  <div class="section-header">
+    <p class="lbl">Elecciones Generales 2026</p>
+    <h1>Candidatos Presidenciales</h1>
+    <div class="div"></div>
+  </div>
+  <div class="grid-wrap">
+    <div class="grid" id="pres-grid">
+
+      <!-- CANDIDATO: KEIKO FUJIMORI -->
+      <div class="pres-card" data-pres="1">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/KEIKO SOFIA FUJIMORI HIGUCHI.jpg" alt="Keiko Fujimori">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Keiko Sofía Fujimori Higuchi</div>
+          <span class="card-tag">Fuerza Popular</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: ROBERTO SÁNCHEZ -->
+      <div class="pres-card" data-pres="2">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/ROBERTO HELBERT SANCHEZ PALOMINO.jpg" alt="Roberto Sánchez">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Roberto Helbert Sánchez Palomino</div>
+          <span class="card-tag">Juntos por el Perú</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: RAFAEL LÓPEZ ALIAGA -->
+      <div class="pres-card" data-pres="3">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/RAFAEL BERNARDO LÓPEZ ALIAGA CAZORLA.jpg" alt="Rafael López Aliaga">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Rafael Bernardo López Aliaga Cazorla</div>
+          <span class="card-tag">Renovación Popular</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: JORGE NIETO -->
+      <div class="pres-card" data-pres="4">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/JORGE NIETO MONTESINOS.jpg" alt="Jorge Nieto Montesinos">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Jorge Nieto Montesinos</div>
+          <span class="card-tag">Partido del Buen Gobierno</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: MARCIO BELMONT -->
+      <div class="pres-card" data-pres="5">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/RICARDO PABLO BELMONT CASSINELLI.jpg" alt="Marcio Marino Belmond Echevarría">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Marcio Marino Belmond Echevarría</div>
+          <span class="card-tag">Partido Cívico en Obras</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: CARLOS ÁLVAREZ -->
+      <div class="pres-card" data-pres="6">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/CARLOS GONSALO ALVAREZ LOAYZA.jpg" alt="Carlos Álvarez Loayza">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Carlos Gonzalo Álvarez Loayza</div>
+          <span class="card-tag">Partido País para Todos</span>
+        </div>
+      </div>
+
+      <!-- CANDIDATO: PABLO LÓPEZ CHAU -->
+      <div class="pres-card" data-pres="7">
+        <div class="card-photo">
+          <div class="ph">
+            <img src="FOTOS DE PRESIDENTES/PABLO ALFONSO LOPEZ CHAU NAVA.jpg" alt="Pablo López Chau Nava">
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Pablo Alfonso López Chau Nava</div>
+          <span class="card-tag">Ahora Nación – AN</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SENADORES ══════════════ -->
+<section class="page" id="page-senadores">
+  <div class="section-header">
+    <p class="lbl">Elecciones Generales 2026</p>
+    <h1>Senadores</h1>
+    <div class="div"></div>
+  </div>
+  <div class="list-section">
+
+    <!-- FUERZA POPULAR -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-fp">
+          <img src="FOTOS DE PARTIDOS/FUERZA POPULAR.jpg" alt="Fuerza Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Fuerza Popular
+      </h2>
+      <div class="candidate-list" id="sen-fp"></div>
+    </div>
+
+    <!-- JUNTOS POR EL PERÚ -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-jp">
+          <img src="FOTOS DE PARTIDOS/JUNTOS POR EL PERÚ.jpg" alt="Juntos por el Perú" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Juntos por el Perú
+      </h2>
+      <div class="candidate-list" id="sen-jp"></div>
+    </div>
+
+    <!-- RENOVACIÓN POPULAR -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-rp">
+           <img src="FOTOS DE PARTIDOS/RENOVACIÓN POPULAR.jpg" alt="Renovación Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Renovación Popular
+      </h2>
+      <div class="candidate-list" id="sen-rp"></div>
+    </div>
+
+    <!-- PARTIDO DEL BUEN GOBIERNO -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-bg">
+          <img src="FOTOS DE PARTIDOS/PARTIDO DEL BUEN GOBIERNO.jpg" alt="Partido del Buen Gobierno" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido del Buen Gobierno
+      </h2>
+      <div class="candidate-list" id="sen-bg"></div>
+    </div>
+
+    <!-- PARTIDO CÍVICO EN OBRAS -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-co">
+           <img src="FOTOS DE PARTIDOS/PARTIDO CÍVICO OBRAS.jpg" alt="Partido Cívico en Obras" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido Cívico en Obras
+      </h2>
+      <div class="candidate-list" id="sen-co"></div>
+    </div>
+
+    <!-- PARTIDO PAÍS PARA TODOS -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-pt">
+         <img src="FOTOS DE PARTIDOS/PARTIDO PAÍS PARA TODOS.jpg" alt="Partido País para Todos" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido País para Todos
+      </h2>
+      <div class="candidate-list" id="sen-pt"></div>
+    </div>
+
+    <!-- AHORA NACIÓN -->
+    <div class="party-block">
+      <h2>
+        <span class="party-icon" id="icon-sen-an">
+          <img src="FOTOS DE PARTIDOS/AHORA NACIÓN - AN.jpg" alt="Ahora Nación" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Ahora Nación – AN
+      </h2>
+      <div class="candidate-list" id="sen-an"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ DIPUTADOS ══════════════ -->
+<section class="page" id="page-diputados">
+  <div class="section-header">
+    <p class="lbl">Elecciones Generales 2026</p>
+    <h1>Diputados</h1>
+    <div class="div"></div>
+  </div>
+  <div class="list-section">
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/FUERZA POPULAR.jpg" alt="Fuerza Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Fuerza Popular – Lima
+      </h2>
+      <div class="candidate-list" id="dip-fp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/JUNTOS POR EL PERÚ.jpg" alt="Juntos por el Perú" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Juntos por el Perú – Lima
+      </h2>
+      <div class="candidate-list" id="dip-jp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/RENOVACIÓN POPULAR.jpg" alt="Renovación Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Renovación Popular – Lima
+      </h2>
+      <div class="candidate-list" id="dip-rp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+         <img src="FOTOS DE PARTIDOS/PARTIDO DEL BUEN GOBIERNO.jpg" alt="Partido del Buen Gobierno" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido del Buen Gobierno – Lima
+      </h2>
+      <div class="candidate-list" id="dip-bg"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+           <img src="FOTOS DE PARTIDOS/PARTIDO CÍVICO OBRAS.jpg" alt="Partido Cívico en Obras" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido Cívico en Obras – Lima
+      </h2>
+      <div class="candidate-list" id="dip-co"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+           <img src="FOTOS DE PARTIDOS/PARTIDO PAÍS PARA TODOS.jpg" alt="Partido País para Todos" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido País para Todos – Lima
+      </h2>
+      <div class="candidate-list" id="dip-pt"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/AHORA NACIÓN - AN.jpg" alt="Ahora Nación" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Ahora Nación – AN – Lima
+      </h2>
+      <div class="candidate-list" id="dip-an"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ PARLAMENTO ANDINO ══════════════ -->
+<section class="page" id="page-parlamento">
+  <div class="section-header">
+    <p class="lbl">Elecciones Generales 2026</p>
+    <h1>Parlamento Andino</h1>
+    <div class="div"></div>
+  </div>
+  <div class="list-section">
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/FUERZA POPULAR.jpg" alt="Fuerza Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Fuerza Popular
+      </h2>
+      <div class="candidate-list" id="par-fp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/JUNTOS POR EL PERÚ.jpg" alt="Juntos por el Perú" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Juntos por el Perú
+      </h2>
+      <div class="candidate-list" id="par-jp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/RENOVACIÓN POPULAR.jpg" alt="Renovación Popular" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Renovación Popular
+      </h2>
+      <div class="candidate-list" id="par-rp"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+           <img src="FOTOS DE PARTIDOS/PARTIDO DEL BUEN GOBIERNO.jpg" alt="Partido del Buen Gobierno" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido del Buen Gobierno
+      </h2>
+      <div class="candidate-list" id="par-bg"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+           <img src="FOTOS DE PARTIDOS/PARTIDO CÍVICO OBRAS.jpg" alt="Partido Cívico en Obras" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido Cívico en Obras
+      </h2>
+      <div class="candidate-list" id="par-co"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+           <img src="FOTOS DE PARTIDOS/PARTIDO PAÍS PARA TODOS.jpg" alt="Partido País para Todos" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Partido País para Todos
+      </h2>
+      <div class="candidate-list" id="par-pt"></div>
+    </div>
+
+    <div class="party-block">
+      <h2>
+        <span class="party-icon">
+          <img src="FOTOS DE PARTIDOS/AHORA NACIÓN - AN.jpg" alt="Ahora Nación" style="width:100%;height:100%;object-fit:contain">
+        </span>
+        Ahora Nación – AN
+      </h2>
+      <div class="candidate-list" id="par-an"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DETAIL POPUP -->
+<div class="detail-overlay" id="detail-overlay">
+  <div class="detail-box">
+    <button class="close-btn" id="close-detail">✕</button>
+    <div class="detail-party" id="d-party"></div>
+    <div class="detail-name" id="d-name"></div>
+    <div class="detail-row"><span class="lbl2">Cargo:</span><span class="val" id="d-cargo"></span></div>
+    <div class="detail-row"><span class="lbl2">Profesión:</span><span class="val" id="d-prof"></span></div>
+    <button class="back-home-btn" id="back-home-btn">← Volver a Candidatos Presidenciales</button>
+  </div>
+</div>
+
+<footer>Elecciones Generales 2026 &nbsp;·&nbsp; República del Perú</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+const PRESIDENTES = [
+  {id:1, name:'Keiko Sofía Fujimori Higuchi',     party:'Fuerza Popular',           cargo:'Presidenta de la República', prof:'Economista, excongresista y lideresa política'},
+  {id:2, name:'Roberto Helbert Sánchez Palomino', party:'Juntos por el Perú',        cargo:'Presidente de la República', prof:'Abogado'},
+  {id:3, name:'Rafael Bernardo López Aliaga Cazorla', party:'Renovación Popular',    cargo:'Presidente de la República', prof:'Ingeniero industrial'},
+  {id:4, name:'Jorge Nieto Montesinos',           party:'Partido del Buen Gobierno', cargo:'Presidente de la República', prof:'Sociólogo'},
+  {id:5, name:'Marcio Marino Belmond Echevarría', party:'Partido Cívico en Obras',   cargo:'Presidente de la República', prof:'Abogado'},
+  {id:6, name:'Carlos Gonzalo Álvarez Loayza',    party:'Partido País para Todos',   cargo:'Presidente de la República', prof:'Comediante'},
+  {id:7, name:'Pablo Alfonso López Chau Nava',    party:'Ahora Nación – AN',         cargo:'Presidente de la República', prof:'Economista (Doctor en Economía)'},
+];
+
+const SEN_FP = ['Miguel Ángel Torres Morales','Martha Gladys Chávez Cossío','Fernando Miguel Rospigliosi Capurro','Carmen Patricia Juárez Gallegos','César Augusto Astudillo Salcedo','Martha Lupe Moyano Delgado','Carlos Mario del Carmen Tubino Arias Schreiber','Cecilia Antonieta Castro Torres','Carlos Fernando Mesía Ramírez','Sitza Lita Romero Peralta','Sandro Espósito Shapiama','Rita Elena Ayasta de Díaz','Ricardo Rivera Romero','Liliana Angélica Pinedo Achaca','Jaime Agustín Sobero Taira','Jeny Luz López Morales','Raúl Huamán Coronado','Santusa Ansia Mamani Vilca','Erwin Tito Ortega','María Pilar Pérez Villasante','César Milton Campos Ramírez','Betty Gladys Ananculi Gómez','Jesús Alexander Alcalá Mateo','Elsa Nora Tuesta de Nogueira','Alexander Gallardo Sandoval','Estela Martha León Requena','Juan Manuel Alarcón Ato','Cecilia Rosario Villanueva Oshiro','Carlos Walter Mejía','Magda Lili Manco'];
+const SEN_JP = ['José Mercedes Castillo','Silvana Emperatriz Robles','Saúl Andrés Armacanqui','Anahí Durand','José Carlos Abarca','Janet Patricia Marín','Bernardo Jaime Quito','Margot Palacios','Isaac Humala','Paula Honoria O\'Higgins','Hernando Ismael Cevallos','Edelmira Cristina Rocillo','Iber Antenor Maraví','Luz Marina Rodríguez','Pasión Neomias Dávila','Carmen Celinda Yalico','César Copa','Evila Sangama','José Praxedes Feria','María del Rosario Ramos','Dante Alfonso Castro','Laura Micaela Rivas','Javier Augusto Donayre','Prudencia Paula Cayetano','Martín Colán','Vilma Rosa Vega','Luis Mamani','Nelly Aysanoa','Manuel Eugenio Torbisco','Dalila Custodio'];
+const SEN_RP = ['Rafael Rey Rey','Jorge del Castillo Gálvez','Luz Salgado Rubianes','Martha Chávez Cossío','Carlos Tubino Arias-Schreiber','Nelly Cuadros Trujillo','Alejandro Aguinaga Recuenco','Yeni Vilcatoma de la Cruz','Luis Galarreta Velarde','Cecilia Chacón de Vettori','Rolando Reátegui Flores','Segundo Tapia Bernal','Karina Beteta Rubín','Úrsula Letona Pereyra','Miguel Torres Morales','Mario Mantilla Medina','Percy Alcalá Mateo','Tamar Arimborgo Guerra','Ángel Neyra Olaychea','Guillermo Bocángel Weydert','Bienvenido Ramírez Tandazo','Moisés Mamani Colquehuanca','Edwin Donayre Gotzch','Freddy Sarmiento Betancourt','César Combina Salvatierra','Diethell Columbus Murata','Guillermo Aliaga Pajares','Fernando Meléndez Celis','Héctor Becerril Rodríguez','Rosa Bartra Barriga'];
+const SEN_BG = ['Flavio Felipe Figallo Rivadeneyra','Patricia Milagros Iturregui Byrne','Carlos David Caballero León','Luz Elena Foronda Merino','Juan Francisco Rojas Leo','Susana Flor de Maria Matute Charun','Abraham Santiago Siles Vallejos','Luisa Ignacia Santur Alberca','Jorge Octavio Gavidia Rodríguez','María del Pilar Ayquipa Guzmán','José Guillermo Nugent Herrera','Sabina Gloria Núñez Altamirano','Abel Máximo Salazar Chinchilla','Beatriz Carolina Zavala Loayza','Juan Carlos Guerrero Bravo','Olinda Esther Pachón Cabrera','Eduardo Alejandro Atao Espinoza','Mercedes Olga Suyón Juárez','José Antonio de la Vega Bocanegra','María Magdalena Pairazamán Guillermo de Aquiño','Percy Elías Chaupis Llagas','Macedonia Castro Córdova','Elin Isaías Cahuana Aliaga','Haideé Flormila Mateo Osorio','Miguel Ángel Galindo Loayza','Manuela Rosa Lilibeth García Moncada','César Leoncio Fuentes Pardo','Hebe Isabel Eche Palacios de Saavedra','Flor de María Garrido Oliva'];
+const SEN_CO = ['Daniel Hugo Barragán Coloma','Agripina María del Pilar Flores Córdova','Walter Francisco Gago Rodríguez','Giovanna Maritza Reátegui Cantoni de Resoagli','Roger Miguel Astucuri Laura','Lidia Lourdes Guerra Linares','Francisco Chang Key Hinojosa','Beta Rosario Vara Uzuriaga','Gustavo Justo Jove Choque','Hilda Huamán Román','José Arturo Torres Ventocilla','Marisa Sofía Sánchez González','Ciro Luis Silva Paredes','Hortencia Saavedra Guevara','Juan René Yábar Dávila Cuglievan','Norma Raquel Peña Briceño','Alex José Cosme Huerta','María Rita Guevara Bermúdez','César Augusto Calderón Guzmán','Angélica Prícila Valle Asencios','Martín Guevara Chuquipul','Susana Vargas Ávalos','Julio César Canales Chilquillo','Luz Herlinda Carbajal Vera','Juan Carlos Calderón Córdova','Norma Patricia Valdivia Carrión','Estanislao Hurtado Huamán','Doris Soledad Narva Infante de Acuña','Rafael Ernesto Zevallos Gamarra','María Elena Gamarra Cruz'];
+const SEN_PT = ['Amelia Julia Príncipe Trujillo','Vladimir Antonio Meza Villarreal','Susana Ynes Castañeda Otsu','Juan Manuel Kosme Sheput Moore','Elena Elizabeth Lon Kan Prado','Marco Tulio Falconí Picardo','Ruth Perpetua Valencia Meza','Javier Antonio Bobadilla Leiva','Juana Alexandra Chipana Morazzani','George Edward Málaga Trillo','Teresa Egle Mogrovejo Valera','Hermes Ramón Velásquez Chamochumbi','Yéssica Susana Mere Ramírez','Mario Enrico Carozzi Fernández Maldonado','María Elena Chumpitazi Hernández','Temistocles Deiver Ibarra Serna','Diana Silvia Ríos Ardiles de Valencia','Miguel Alberto Herrera Céspedes','Andrés Martín Culquicóndor Chirinos','Clara Cledi Peña Ahuanari','Lázaro Efraín Bayona Jiménez','Victoria Janako Higa Peralta Vda de Meza','Fensol Niel Morón Ahuanari','Ramiro Zuzunaga Morales'];
+const SEN_AN = ['Pablo Alfonso López Chau Nava','Carmen Patricia Correa Arangoitia','Luis Alberto Villanueva Carbajal','Mirtha Esther Vásquez Chuquilín','Jaime Ricardo Delgado Zegarra','Judith Esperanza Cabellos Luyo','Ruth Luque Ibarra','Gardenia Ruth Jiménez Villavicencio','Fortunato Alva Dávila','Claire Marinella Pinedo Ochoa','Tito Roberto Vílchez Vílchez','Graciela Alvarado Ávalos','Javier Corrales Valencia','Vilma Olga Jamanca Menacho','David Rubén Mayta Salluca','María Isabel Mendoza Silva','Roger Alejandro Rumrrill García','Alexandra Lizinca Cugler Dyrssen','Enrique Barturen Alarcón','Mercedes María Boyer Barrientos','Luis Alberto Paredes Rojas','Magally Vásquez Uriarte','Alfonso Cerna Vásquez','Luz Aurelia Alvarado Cáceres','Juan Gustavo Minaya Goñy','Rosío Eulalia Zevallos Urday','Hipólito Marcial Uceda Pereda','Tania Caroline Canta Hilario'];
+
+const DIP_FP = ['Cecilia Isabel Chacón de Vettori','Diethell Columbus Murata','Rosangella Andrea Barbarán Reyes','Pier Paolo Figari Mendoza','Pierangeli Daniela Dodero Jovich','Marco Antonio Pacheco Quispe','Flor de Jesús Meza Rivera','Juan Asdrúbal Rabasa Lavarello','Konnie Michelle Vidaurre Torres','Antonio Dongo Frasson','María Helena Mendoza del Solar','Luis Enrique Otoya Trelles','Lourdes Carolina Carmelo Ancaya','Abraham Dionicio Pacheco Cajaleón','Liliana Rojas Espinoza'];
+const DIP_JP = ['Roberto Helbert Sánchez Palomino','Isabel Cortez Aguirre','José Arturo Ayala del Río','Giannina Iris Avendaño Vilca','Sergio Fernando Tejada Galindo','Sigrid Bazán Narro','Hilso Cladio Ramos Cosme','Irma Castillo Terrones','Julio César Arbizu González','Marisol García Tello','Luis Alberto Adrianzén','Rocío Silva Santisteban Manrique','Richard Rubio Ñaupari','Nancy Tolentino Gamarra','Manuel Dammert Ego Aguirre','Indira Huilca Flores','Hernán Núñez Díaz','Verónica Delgado García','Carlos Rivera Paz','Patricia Correa Arangoitia','Ronald Gamarra Herrera','Rosa María Palacios McBride','Jorge Manco Zaconetti','Ana María Saldarriaga','Alberto Quintanilla Chacón','Aída García Naranjo Morales','Anahí Durand Guevara','Vicente Zeballos Salinas','Pedro Francke Ballvé','Mirtha Vásquez Chuquilín','Guido Bellido Ugarte','Betssy Chávez Chino'];
+const DIP_RP = ['Rafael Bernardo López Aliaga Cazorla','Norma Yarrow Lumbreras','Diego Bazán Calderón','Alejandro Muñante Barrios','María Jáuregui Martínez','Jorge Montoya Manrique','Patricia Chirinos Venegas','Esdras Medina Minaya','Milagros Jáuregui de Aguayo','José Cueto Aservi','Gladys Echaíz Ramos','Héctor Valer Pinto','Adriana Tudela Gutiérrez','Jorge Zeballos Aponte','María Córdova Lobatón','Víctor Flores Ruiz','Carlos Mesía Ramírez','Neldy Mendoza Ramírez','Luis Roel Alva','Javier Padilla Romero','Julio Rosas Huaranga','Ricardo Belmont Cassinelli','Ántero Flores-Aráoz Esparza','Lourdes Flores Nano','Fernando Cillóniz Benavides','Beatriz Mejía Mori','Alberto Beingolea Delgado','Pedro Cateriano Bellido','Marisol Pérez Tello','Salvador del Solar Labarthe','Gino Costa Santolalla','Daniel Urresti Elera'];
+const DIP_BG = ['Oscar de Jesús Reto Otero','Hilda Judit Fernández de la Torre','Luis Giovanny Ávila Cárdenas','Martha Doris Pari Pariapaza','Luis Eliseo Quispe Candia','Jessica Benítez Barrionuevo','Jesús Túpac Yupanqui Chumioque','Rossana Herminia Alayza Maccera','Ernesto Alonso Nieto Vega','Marina Carolina Bendezú Yzaguirre','Jimena Lucero Guevara Delgado','Sixto Escarcena Lerma','Lesli Lisbeth Molina Soto','Javier Augusto Vega Cabieses','Beatriz Soledad Valverde Manrique','Alan Daryn Steven Centeno Bello','Romina Alejandra Uribe Sáenz','Christian Cconaya Bermejo','Orfa Soledad Turín Narváez','Rolando Cueva García','Nathaly Milagros Molina Soto','Martín José Palomino Córdova','Elvi Maylee Calderón Torres','Leonardo Segundo Portal Anaya','María del Carmen Zelaya Armijo','Magda Roxana Pascual Balvín','Eduardo Daniel Castro Mendoza','Carmen Noelia Yurivilca del Villar','Derick Caleb Noa Lino','Vivian Lisseth Rivera Ayquipa'];
+const DIP_CO = ['Jeenny Cristina Samanez González Vigil','Víctor Eduardo Piñán Mamani','Andrea Dayna Medina Stein','Raúl Jesús Camargo Porta','Margarita Isabel Pajares Flores','Rafael Romero Vásquez','Sonia María Rosadío Ángeles','Sissi del Pilar Angulo Rivas','Eduardo Túllume Gamarra','Nicolle Brigitt Huamaní Pupuche','Raúl Adolfo Arias Ramos','Alison Madeley Guevara Bermúdez','Johnny Alberto Villón Macedo','Felicita Villalobos Cortés','Noe Vara Uzuriaga','Rosmery Huamaní Acosta','Mariano Díaz Chávez','Rossana Luz Arnao Linares','Alejandro Hipólito Ramos Rivera','Nélida Kcalla Ríos','Carlos Enrique Castilla Salas','Albertina Tapia Coronel','Jorge Luis Socso Huamán','Crisbell Kimberley Méndez Fajardo','Ronald Román Zaravia Aldave','Emperatriz Huamán Tumi','Jaime Javier Frías Reymundo','Marisol Verónica Giordano Silva','Ramón Buendía Pocco','Ingri Fiorella Vara Ayre'];
+const DIP_PT = ['Delsy Yesely Romero Álvarez','Diego Edgar Guevara Vivanco','Gloria Patricia Lengua Lafosse','Emilio Ricardo Rossi Ferreyros','Cristina Urueta Muñoz','Daniel Ponce Silva','Sarita del Rosario Manrique Díaz','Julio Grimaldo Rojas Antara','Carolina Lisa Martínez','José Ronald Martín Soto Florián','Giovanna Patricia Giurfa Seijas','Carlos Manuel Valladares Lázaro','Jessica Lisbeth Huamán Vilca','Edgar Pimentel Juárez','Christian Alonso Quiñe Espinoza','Liz Linda Salazar Santos','Gari Peralta Carrión','Miguel Ángel Plácido Pampa','Rocío Pilar Herrera Pastor','Samuel Aarón Plácido Pampa','Gladys Roxana Julca Luna','Jean Víctor Guevara Ancajima','Lisett Stephanie Herrera Pastor','Walter José Huamán Gómez'];
+const DIP_AN = ['Harvey Julio Colchado Huamaní','Indira Isabel Huilca Flores','Carlo Magno Salcedo Cuadros','Nicoly Soledad Araujo Gamboa','Ángel Renato Meneses Crispín','Jenniffer Melissa Ponte Guerrero','Brayan Aurelio Valentín Delgado','María Nimia Muñoz Díaz','Salvador Arévalo La Rosa','Delia García Asturima','Roberto Alejandro Díaz Asto','Nilda Esperanza Carranza Rodríguez','Carol Vanessa Huari Huamán','Osward Luis Hidalgo Torres','Talía Mercedes Mayta Rodríguez','Luis Alberto Chambi Paucar','Anita Mileidi Abanto Villegas','David Rafael Sánchez Arana','Gloria Dayana Alejandro Yáñez','María Isabel Durand Paraguay','Joseph Elías Dager Alva','Gloria María Machuca Chinchay','Rafael Jimmy Caparo Coronado','Isabel Florcita Tamara Márquez','Bernardino Jair Manrique Olivera','Eva Lorenza Bonifacio Porras','Christian Benjamín Zegarra Carrillo','Yesenia Judith Leiva Bravo','Guillermo Andrade Julianes','Madai Arellano Olaechea'];
+
+const PAR_FP = ['Luis Fernando Galarreta Velarde','Rosario de las Nieves Guevara Badillo','Pedro Carlos Casanova Saavedra','Zara Zanabria Poma','Oscar Alfredo Torres García','Pedro Marbell Castro Alvarado','Elena del Rosario Fiestas Bustos','Julio César Gil Silva','Ida Mariella Ramírez Llamoca','Héctor David Silva Serrot','Lelis Choque Núñez','Teodora Roxana Vicuña Carpio','Álvaro Arturo Vicente Quispe','Annie Stephanie Chacón Larico'];
+const PAR_JP = ['Paul Percy Fernández','Rosario del Carmen Mori','Jorge Eusebio Manco','Angélica Rosario Espinoza','Richard Michael Hidalgo','Gleny Mileyda Flores','Williams Mijail Sosa','Judith Guadalupe Mamani','Juan Rojas','Ana Ysabel Narváez','Gustavo Puma','Fany Idelba Chahuares','Anderson Duberli Olivos','Treisi Melisa Torres','Jorge Luis Cárdenas','Silvia Yanet Piñas'];
+const PAR_RP = ['Jorge Luis Romero','Ana María Choquehuanca','Carlos Neuhaus Tudela','Giuliana Loza Ávalos','Juan Sheput Moore','Yeni Vilcatoma','Mauricio Mulder Bedoya','Rosa María Palacios','Fernán Altuve Febres','José Barba Caballero','Jorge Trelles Montero','Cecilia Blume Cillóniz','Alfredo Gildemeister','Ricardo Márquez Flores','Enrique Ghersi Silva','Luis Solari de la Fuente'];
+const PAR_BG = ['Marcio Marino Bendezú Echevarría','Pamela Erika Osorio Espinoza','Carlos Manuel Aquiño Gomero','María Luisa Ñáñez Millones','Serafín Pariona Auccasi','Nery Felicita Yauri Samaniego','José Luis Melo Robles','Greiy Juliana Perea Ríos','Jhon Irving Guevara Feijoo','Nélida Gloria Íñigos Balcón','Isac Joel Paucarcaja Rojas','Annie Shirley Cáceres Samaniego','Víctor Hugo Turín Limo','Sheila Camila Rosillo Herrera','Linder Pool Castro Samaniego','Ana María Peña García'];
+const PAR_CO = ['Jahn Clerk Nicanor Toledo Palomino','Constantino Loa Ortiz','Rosa Zegarra Farfán','Ernesto Raúl León Díaz','Ana Paula Buendía Figueroa','Giovana Yataco Magallanes','Jermayin Yampier Guzmán Vásquez','Cila Verónica Retamozo Ore','José Carlos Vásquez Cristóbal','Gladys Karina Cuba Vara'];
+const PAR_PT = ['Jean Alberto Tenorio Valenzuela','Carol Ybeth Rubiños Vivanco','Susan María Torres Quispe','Jorge Alfredo Fernández Meza','Elsa María Fernanda Flores Balarezo','Carlos Enrique Heredia Luna','Iris Judith Díaz Atencia','Oscar Cipriano Espinoza Barrueta','Néstor Palián Ríos'];
+const PAR_AN = ['José Guillermo Ramos Anahue','Yesenia Angelita Mamani Zapata','Yurfre Barboza Ore','Sandra Cabrera Condori','Felipe Ángel Varela Travesí','Luz Karina Regalado Chávez','Waldemar Chanzapa Franco','Luzmila Orfa Huapalla Quiñónez','Wilder Edgar Mamani Llica','Carmen Pryscila Rodríguez Bazán','Francisco Ernesto Arce Alcocer','Verónica Ceil Bardales Noriega','Adrián Abel Encalada Palacios','Vilma Maruja Vergara Zamata de Saínio','Lionel Bardales del Águila','Jazmín Silvia Leonor Chipayo Ramos'];
+
+// ══════════════════════════════════════════
+//  MAPA de PARTIDO → RUTA de LOGO (para listas)
+// ══════════════════════════════════════════
+const PARTY_LOGOS = {
+  'Fuerza Popular': 'FOTOS DE PARTIDOS/FUERZA POPULAR.jpg',
+  'Juntos por el Perú': 'FOTOS DE PARTIDOS/JUNTOS POR EL PERÚ.jpg',
+  'Renovación Popular': 'FOTOS DE PARTIDOS/RENOVACIÓN POPULAR.jpg',
+  'Partido del Buen Gobierno': 'FOTOS DE PARTIDOS/PARTIDO DEL BUEN GOBIERNO.jpg',
+  'Partido Cívico en Obras': 'FOTOS DE PARTIDOS/PARTIDO CÍVICO OBRAS.jpg',
+  'Partido País para Todos': 'FOTOS DE PARTIDOS/PARTIDO PAÍS PARA TODOS.jpg',
+  'Ahora Nación – AN': 'FOTOS DE PARTIDOS/AHORA NACIÓN - AN.jpg'
+};
+
+// ══════════════════════════════════════════
+//  BUILD LISTS (con foto del partido)
+// ══════════════════════════════════════════
+function buildList(containerId, names, partyName) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const logoSrc = PARTY_LOGOS[partyName] || '';
+  el.innerHTML = names.map((n,i) => `<div class="cand-item">
+      <span class="cand-num">${i+1}</span>
+      <div class="cand-icon-wrap">
+        <img src="${logoSrc}" alt="${partyName}" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <span class="cand-name-txt">${n}</span>
+    </div>`).join('');
+}
+
+// SENADORES
+buildList('sen-fp', SEN_FP, 'Fuerza Popular');
+buildList('sen-jp', SEN_JP, 'Juntos por el Perú');
+buildList('sen-rp', SEN_RP, 'Renovación Popular');
+buildList('sen-bg', SEN_BG, 'Partido del Buen Gobierno');
+buildList('sen-co', SEN_CO, 'Partido Cívico en Obras');
+buildList('sen-pt', SEN_PT, 'Partido País para Todos');
+buildList('sen-an', SEN_AN, 'Ahora Nación – AN');
+
+// DIPUTADOS
+buildList('dip-fp', DIP_FP, 'Fuerza Popular');
+buildList('dip-jp', DIP_JP, 'Juntos por el Perú');
+buildList('dip-rp', DIP_RP, 'Renovación Popular');
+buildList('dip-bg', DIP_BG, 'Partido del Buen Gobierno');
+buildList('dip-co', DIP_CO, 'Partido Cívico en Obras');
+buildList('dip-pt', DIP_PT, 'Partido País para Todos');
+buildList('dip-an', DIP_AN, 'Ahora Nación – AN');
+
+// PARLAMENTO ANDINO
+buildList('par-fp', PAR_FP, 'Fuerza Popular');
+buildList('par-jp', PAR_JP, 'Juntos por el Perú');
+buildList('par-rp', PAR_RP, 'Renovación Popular');
+buildList('par-bg', PAR_BG, 'Partido del Buen Gobierno');
+buildList('par-co', PAR_CO, 'Partido Cívico en Obras');
+buildList('par-pt', PAR_PT, 'Partido País para Todos');
+buildList('par-an', PAR_AN, 'Ahora Nación – AN');
+
+// ══════════════════════════════════════════
+//  NAV ROUTING
+// ══════════════════════════════════════════
+const navLinks = document.querySelectorAll('nav a');
+const pages    = document.querySelectorAll('.page');
+
+function showPage(id) {
+  navLinks.forEach(l => l.classList.toggle('active', l.dataset.page === id));
+  pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+navLinks.forEach(l => l.addEventListener('click', e => { e.preventDefault(); showPage(l.dataset.page); }));
+
+// ══════════════════════════════════════════
+//  PRESIDENT CARD CLICK → DETAIL POPUP
+// ══════════════════════════════════════════
+const overlay   = document.getElementById('detail-overlay');
+const closeBtn  = document.getElementById('close-detail');
+const backBtn   = document.getElementById('back-home-btn');
+
+document.querySelectorAll('.pres-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const p = PRESIDENTES.find(x => x.id === +card.dataset.pres);
+    if (!p) return;
+    document.getElementById('d-party').textContent = p.party;
+    document.getElementById('d-name').textContent  = p.name;
+    document.getElementById('d-cargo').textContent = p.cargo;
+    document.getElementById('d-prof').textContent  = p.prof;
+    overlay.classList.add('open');
+  });
+});
+
+function closeDetail() { overlay.classList.remove('open'); }
+
+closeBtn.addEventListener('click', closeDetail);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeDetail(); });
+
+backBtn.addEventListener('click', () => {
+  closeDetail();
+  showPage('presidencial');
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+</body>
+</html>
